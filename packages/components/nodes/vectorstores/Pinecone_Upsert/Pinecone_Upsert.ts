@@ -115,6 +115,11 @@ class PineconeUpsert_VectorStores implements INode {
 
         if (pineconeNamespace) obj.namespace = pineconeNamespace
 
+        await pineconeIndex.delete1({
+            deleteAll: true,
+            namespace: obj.namespace
+        })
+
         const vectorStore = await PineconeStore.fromDocuments(finalDocs, embeddings, obj)
 
         if (output === 'retriever') {
