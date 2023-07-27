@@ -36,6 +36,7 @@ COPY . .
 
 RUN yarn build
 
-EXPOSE 3000
+WORKDIR /usr/src/packages/packages/server
 
-CMD [ "yarn", "start" ]
+# Make flowise callable from cli
+RUN npm link
