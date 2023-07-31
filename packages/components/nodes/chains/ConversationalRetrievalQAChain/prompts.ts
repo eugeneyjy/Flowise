@@ -56,9 +56,10 @@ We have the opportunity to refine the existing answer (only if needed) with some
 Given the new context, refine the original answer to better answer the question. 
 If you can't find answer from the context, return the original answer.`
 
-export const CUSTOM_QUESTION_GENERATOR_CHAIN_PROMPT = `Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question, answer in the same language as the follow up question. include it in the standalone question.
+export const CUSTOM_QUESTION_GENERATOR_CHAIN_PROMPT = `Given the following conversation and a follow up message from human, use the chat history to rephrase the follow up message from the human such that it could be treated as a standalone message from the human. 
+If the follow up message is irrelevant with the chat history, just response back the follow up message as it is. Response in the same language as the follow up message and include it in the standalone message.
 
 Chat History:
 {chat_history}
-Follow Up Input: {question}
-Standalone question:`
+Follow up input from human: {question}
+Standalone message from human:`
