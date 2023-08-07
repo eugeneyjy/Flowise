@@ -193,7 +193,8 @@ export const buildLangchain = async (
     question: string,
     chatId: string,
     appDataSource: DataSource,
-    overrideConfig?: ICommonObject
+    overrideConfig?: ICommonObject,
+    metadataFilter?: string
 ) => {
     const flowNodes = cloneDeep(reactFlowNodes)
 
@@ -226,12 +227,17 @@ export const buildLangchain = async (
             const reactFlowNodeData: INodeData = resolveVariables(flowNodeData, flowNodes, question)
 
             logger.debug(`[server]: Initializing ${reactFlowNode.data.label} (${reactFlowNode.data.id})`)
-            flowNodes[nodeIndex].data.instance = await newNodeInstance.init(reactFlowNodeData, question, {
-                chatId,
-                appDataSource,
-                databaseEntities,
-                logger
-            })
+            flowNodes[nodeIndex].data.instance = await newNodeInstance.init(
+                reactFlowNodeData,
+                question,
+                {
+                    chatId,
+                    appDataSource,
+                    databaseEntities,
+                    logger
+                },
+                metadataFilter
+            )
             logger.debug(`[server]: Finished initializing ${reactFlowNode.data.label} (${reactFlowNode.data.id})`)
         } catch (e: any) {
             logger.error(e)

@@ -733,7 +733,8 @@ export class App {
                         this.chatflowPool.activeChatflows[chatflowid].overrideConfig,
                         incomingInput.overrideConfig
                     ) &&
-                    !isStartNodeDependOnInput(this.chatflowPool.activeChatflows[chatflowid].startingNodes)
+                    !isStartNodeDependOnInput(this.chatflowPool.activeChatflows[chatflowid].startingNodes) &&
+                    !incomingInput.metadataFilter
                 )
             }
 
@@ -814,7 +815,8 @@ export class App {
                         incomingInput.question,
                         chatId,
                         this.AppDataSource,
-                        incomingInput?.overrideConfig
+                        incomingInput?.overrideConfig,
+                        incomingInput?.metadataFilter
                     )
 
                     const nodeToExecute = reactFlowNodes.find((node: IReactFlowNode) => node.id === endingNodeId)

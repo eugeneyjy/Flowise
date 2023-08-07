@@ -1,4 +1,4 @@
-import { INode, INodeData, INodeOutputsValue, INodeParams } from '../../../src/Interface'
+import { ICommonObject, INode, INodeData, INodeOutputsValue, INodeParams } from '../../../src/Interface'
 import { PineconeClient } from '@pinecone-database/pinecone'
 import { PineconeLibArgs, PineconeStore } from 'langchain/vectorstores/pinecone'
 import { Embeddings } from 'langchain/embeddings/base'
@@ -83,7 +83,7 @@ class Pinecone_Existing_VectorStores implements INode {
         ]
     }
 
-    async init(nodeData: INodeData): Promise<any> {
+    async init(nodeData: INodeData, _input: string, _options: ICommonObject, metadataFilter: string): Promise<any> {
         const pineconeApiKey = nodeData.inputs?.pineconeApiKey as string
         const pineconeEnv = nodeData.inputs?.pineconeEnv as string
         const index = nodeData.inputs?.pineconeIndex as string
@@ -110,6 +110,13 @@ class Pinecone_Existing_VectorStores implements INode {
         if (pineconeMetadataFilter) {
             const metadatafilter = typeof pineconeMetadataFilter === 'object' ? pineconeMetadataFilter : JSON.parse(pineconeMetadataFilter)
             obj.filter = metadatafilter
+        }
+        if (metadataFilter) {
+            const metadatafilter = JSON.parse(metadataFilter)
+            obj.filter = {
+                ...obj.filter,
+                ...metadatafilter
+            }
         }
 
         const vectorStore = await PineconeStore.fromExistingIndex(embeddings, obj)
