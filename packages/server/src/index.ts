@@ -35,6 +35,7 @@ import {
     mapMimeTypeToInputField,
     findAvailableConfigs,
     isSameOverrideConfig,
+    isSameMetadataFilter,
     replaceAllAPIKeys,
     isFlowValidForStream,
     isVectorStoreFaiss,
@@ -641,8 +642,8 @@ export class App {
                             clearTimeout(childProcessTimeout)
                         }
                         if (Object.keys(addToChatFlowPool).length) {
-                            const { chatflowid, nodeToExecuteData, startingNodes, overrideConfig } = addToChatFlowPool
-                            this.chatflowPool.add(chatflowid, nodeToExecuteData, startingNodes, overrideConfig)
+                            const { chatflowid, nodeToExecuteData, startingNodes, overrideConfig, metadataFilter } = addToChatFlowPool
+                            this.chatflowPool.add(chatflowid, nodeToExecuteData, startingNodes, overrideConfig, metadataFilter)
                         }
                         resolve(result)
                     }
@@ -734,7 +735,7 @@ export class App {
                         incomingInput.overrideConfig
                     ) &&
                     !isStartNodeDependOnInput(this.chatflowPool.activeChatflows[chatflowid].startingNodes) &&
-                    !incomingInput.metadataFilter
+                    isSameMetadataFilter(this.chatflowPool.activeChatflows[chatflowid].metadataFilter, incomingInput.metadataFilter)
                 )
             }
 
@@ -828,7 +829,13 @@ export class App {
                     nodeToExecuteData = reactFlowNodeData
 
                     const startingNodes = nodes.filter((nd) => startingNodeIds.includes(nd.id))
-                    this.chatflowPool.add(chatflowid, nodeToExecuteData, startingNodes, incomingInput?.overrideConfig)
+                    this.chatflowPool.add(
+                        chatflowid,
+                        nodeToExecuteData,
+                        startingNodes,
+                        incomingInput?.overrideConfig,
+                        incomingInput?.metadataFilter
+                    )
                 }
 
                 const nodeInstanceFilePath = this.nodesPool.componentNodes[nodeToExecuteData.name].filePath as string

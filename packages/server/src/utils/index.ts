@@ -501,6 +501,18 @@ export const isSameOverrideConfig = (
     if (!existingOverrideConfig && !newOverrideConfig) return true
     return false
 }
+/**
+ * Rebuild flow if new metadata filter is provided
+ * @param {string} existingMetadataFilter
+ * @param {string} newMetadataFilter
+ * @returns {boolean}
+ */
+export const isSameMetadataFilter = (existingMetadataFilter?: string, newMetadataFilter?: string): boolean => {
+    if (existingMetadataFilter && newMetadataFilter && existingMetadataFilter === newMetadataFilter) {
+        return true
+    }
+    return false
+}
 
 /**
  * Returns the api key path

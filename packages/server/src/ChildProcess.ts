@@ -108,7 +108,8 @@ export class ChildProcess {
                     incomingInput.question,
                     chatId,
                     childAppDataSource,
-                    incomingInput?.overrideConfig
+                    incomingInput?.overrideConfig,
+                    incomingInput?.metadataFilter
                 )
 
                 const nodeToExecute = reactFlowNodes.find((node: IReactFlowNode) => node.id === endingNodeId)
@@ -127,7 +128,8 @@ export class ChildProcess {
                     chatflowid: chatflow.id,
                     nodeToExecuteData,
                     startingNodes,
-                    overrideConfig: incomingInput?.overrideConfig
+                    overrideConfig: incomingInput?.overrideConfig,
+                    metadataFilter: incomingInput?.metadataFilter
                 }
             }
 

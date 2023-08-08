@@ -15,14 +15,22 @@ export class ChatflowPool {
      * @param {INodeData} endingNodeData
      * @param {IReactFlowNode[]} startingNodes
      * @param {ICommonObject} overrideConfig
+     * @param {string} metadataFilter
      */
-    add(chatflowid: string, endingNodeData: INodeData, startingNodes: IReactFlowNode[], overrideConfig?: ICommonObject) {
+    add(
+        chatflowid: string,
+        endingNodeData: INodeData,
+        startingNodes: IReactFlowNode[],
+        overrideConfig?: ICommonObject,
+        metadataFilter?: string
+    ) {
         this.activeChatflows[chatflowid] = {
             startingNodes,
             endingNodeData,
             inSync: true
         }
         if (overrideConfig) this.activeChatflows[chatflowid].overrideConfig = overrideConfig
+        if (metadataFilter) this.activeChatflows[chatflowid].metadataFilter = metadataFilter
         logger.info(`[server]: Chatflow ${chatflowid} added into ChatflowPool`)
     }
 

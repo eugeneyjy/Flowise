@@ -140,6 +140,7 @@ export interface IActiveChatflows {
         endingNodeData: INodeData
         inSync: boolean
         overrideConfig?: ICommonObject
+        metadataFilter?: string
     }
 }
 
