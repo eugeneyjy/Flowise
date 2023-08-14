@@ -35,6 +35,7 @@ import {
     mapMimeTypeToInputField,
     findAvailableConfigs,
     isSameOverrideConfig,
+    isSameMetadataFilter,
     replaceAllAPIKeys,
     isFlowValidForStream,
     isVectorStoreFaiss,
@@ -641,8 +642,8 @@ export class App {
                             clearTimeout(childProcessTimeout)
                         }
                         if (Object.keys(addToChatFlowPool).length) {
-                            const { chatflowid, nodeToExecuteData, startingNodes, overrideConfig } = addToChatFlowPool
-                            this.chatflowPool.add(chatflowid, nodeToExecuteData, startingNodes, overrideConfig)
+                            const { chatflowid, nodeToExecuteData, startingNodes, overrideConfig, metadataFilter } = addToChatFlowPool
+                            this.chatflowPool.add(chatflowid, nodeToExecuteData, startingNodes, overrideConfig, metadataFilter)
                         }
                         resolve(result)
                     }
@@ -733,7 +734,8 @@ export class App {
                         this.chatflowPool.activeChatflows[chatflowid].overrideConfig,
                         incomingInput.overrideConfig
                     ) &&
-                    !isStartNodeDependOnInput(this.chatflowPool.activeChatflows[chatflowid].startingNodes)
+                    !isStartNodeDependOnInput(this.chatflowPool.activeChatflows[chatflowid].startingNodes) &&
+                    isSameMetadataFilter(this.chatflowPool.activeChatflows[chatflowid].metadataFilter, incomingInput.metadataFilter)
                 )
             }
 
@@ -814,7 +816,8 @@ export class App {
                         incomingInput.question,
                         chatId,
                         this.AppDataSource,
-                        incomingInput?.overrideConfig
+                        incomingInput?.overrideConfig,
+                        incomingInput?.metadataFilter
                     )
 
                     const nodeToExecute = reactFlowNodes.find((node: IReactFlowNode) => node.id === endingNodeId)
@@ -826,7 +829,13 @@ export class App {
                     nodeToExecuteData = reactFlowNodeData
 
                     const startingNodes = nodes.filter((nd) => startingNodeIds.includes(nd.id))
-                    this.chatflowPool.add(chatflowid, nodeToExecuteData, startingNodes, incomingInput?.overrideConfig)
+                    this.chatflowPool.add(
+                        chatflowid,
+                        nodeToExecuteData,
+                        startingNodes,
+                        incomingInput?.overrideConfig,
+                        incomingInput?.metadataFilter
+                    )
                 }
 
                 const nodeInstanceFilePath = this.nodesPool.componentNodes[nodeToExecuteData.name].filePath as string

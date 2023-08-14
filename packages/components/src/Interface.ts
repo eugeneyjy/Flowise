@@ -95,7 +95,7 @@ export interface INode extends INodeProperties {
     loadMethods?: {
         [key: string]: (nodeData: INodeData, options?: ICommonObject) => Promise<INodeOptionsValue[]>
     }
-    init?(nodeData: INodeData, input: string, options?: ICommonObject): Promise<any>
+    init?(nodeData: INodeData, input: string, options?: ICommonObject, metadataFilter?: string): Promise<any>
     run?(nodeData: INodeData, input: string, options?: ICommonObject): Promise<string | ICommonObject>
     clearSessionMemory?(nodeData: INodeData, options?: ICommonObject): Promise<void>
 }

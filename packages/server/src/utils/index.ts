@@ -193,7 +193,8 @@ export const buildLangchain = async (
     question: string,
     chatId: string,
     appDataSource: DataSource,
-    overrideConfig?: ICommonObject
+    overrideConfig?: ICommonObject,
+    metadataFilter?: string
 ) => {
     const flowNodes = cloneDeep(reactFlowNodes)
 
@@ -226,12 +227,17 @@ export const buildLangchain = async (
             const reactFlowNodeData: INodeData = resolveVariables(flowNodeData, flowNodes, question)
 
             logger.debug(`[server]: Initializing ${reactFlowNode.data.label} (${reactFlowNode.data.id})`)
-            flowNodes[nodeIndex].data.instance = await newNodeInstance.init(reactFlowNodeData, question, {
-                chatId,
-                appDataSource,
-                databaseEntities,
-                logger
-            })
+            flowNodes[nodeIndex].data.instance = await newNodeInstance.init(
+                reactFlowNodeData,
+                question,
+                {
+                    chatId,
+                    appDataSource,
+                    databaseEntities,
+                    logger
+                },
+                metadataFilter
+            )
             logger.debug(`[server]: Finished initializing ${reactFlowNode.data.label} (${reactFlowNode.data.id})`)
         } catch (e: any) {
             logger.error(e)
@@ -493,6 +499,18 @@ export const isSameOverrideConfig = (
     }
     // If there is no existing and new overrideconfig
     if (!existingOverrideConfig && !newOverrideConfig) return true
+    return false
+}
+/**
+ * Rebuild flow if new metadata filter is provided
+ * @param {string} existingMetadataFilter
+ * @param {string} newMetadataFilter
+ * @returns {boolean}
+ */
+export const isSameMetadataFilter = (existingMetadataFilter?: string, newMetadataFilter?: string): boolean => {
+    if (existingMetadataFilter && newMetadataFilter && existingMetadataFilter === newMetadataFilter) {
+        return true
+    }
     return false
 }
 

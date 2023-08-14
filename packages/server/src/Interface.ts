@@ -131,6 +131,7 @@ export interface IncomingInput {
     history: IMessage[]
     overrideConfig?: ICommonObject
     socketIOClientId?: string
+    metadataFilter?: string
 }
 
 export interface IActiveChatflows {
@@ -139,6 +140,7 @@ export interface IActiveChatflows {
         endingNodeData: INodeData
         inSync: boolean
         overrideConfig?: ICommonObject
+        metadataFilter?: string
     }
 }
 
