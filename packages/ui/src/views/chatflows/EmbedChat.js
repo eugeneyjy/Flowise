@@ -157,8 +157,8 @@ const chatwindowConfig = (isReact = false) => {
                 }
             }`
 }
-
 const embedPopupHtmlCodeCustomization = (chatflowid) => {
+    /* eslint-disable */
     return `<script type="module">
     import Chatbot from "https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js"
     Chatbot.init({
@@ -167,12 +167,14 @@ const embedPopupHtmlCodeCustomization = (chatflowid) => {
         chatflowConfig: {
             // topK: 2
         },
+        filterRegex: /* https:\\/\\/domain.com\\/(page-\\d+) */,
         theme: {
             ${buttonConfig()},
             ${chatwindowConfig()}
         }
     })
 </script>`
+    /* eslint-enable */
 }
 
 const embedPopupReactCodeCustomization = (chatflowid) => {
